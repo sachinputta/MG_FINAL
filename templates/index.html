@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GoggleSigning</title>
+    <meta name="google-signin-client_id" content="942725603741-5lrme3a4uo58ieg5v4dv35j765cqa3rb.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+ <style>
+     .g-signin2{
+         margin-left:800px;
+         margin-top:50px;
+     }
+    
+    
+     .data{
+         display: none;
+     }
+   
+   .guest{
+    display: none;
+   }
+ 
+ </style>
+</head>
+<body >
+
+    <button class="g-signin2" data-onsuccess="SignGuest" >guest</button>
+                   <div class="container">
+                    
+                      <form action="{{ url_for('registeruser') }}" method="post" >
+                    <button class="g-signin2"  data-onsuccess="onSignIn" ></button>
+                          
+                     </form>
+
+            </div>  
+            <div class="guest">
+              <div class="container">
+                Guest:<input type="email" class="form-control"  placeholder="Email"  id="email_guest" disabled > 
+
+                <br>
+                journeyid:<input  type="text" id="userjid"  name="jid" > 
+                email: <input  type="email" id="user_email"   name="email">
+                emotion_tag:<input  type="text" id="guestemotiontag"   name="emotiontag">
+                emotion_value:<input  type="text" id="guestemotionvalue"   name="emotiontagvalue">
+                <br>
+                <br>
+                <button type="submit"  id="guestsubmit"  class="btn btn-success">submit</button>
+                <button onclick="signOut();" class="btn btn-danger" style="margin-left:20px">Sign Out</button>
+              </div>
+            </div>
+
+               
+            <div class="data">
+                <section class="testimonial py-5" id="testimonial">
+                        <div class="container">
+                          <input type='button' value='Help' onclick='f1(this)' />
+                          <input type='button' value='Advice' onclick='f1(this)' />
+                          <input type='button' value='turnAround' onclick='f1(this)' />
+                          <input type='button' value='stress'  onclick='f1(this)' />
+                          <br>
+                             <br>
+                                <input  type="text" id="journey_delete"  name="delete"> <button type="submit"  id="delete"  class="btn btn-danger">DELETE JOURNEY</button>
+                                <br> 
+                                <br>
+                                <input  type="text" id="journey_update"  name="update"> <button type="submit"  id="update"  class="btn btn-primary">UPDATE JOURNEY</button>
+                                <br>
+                                <br>
+                                <input  type="text" id="journey_compare"  name="compare" > 
+                                <input  type="text" id="emotion_compare"  name="e_compare">
+                                <button type="submit"  id="compare"  class="btn btn-success">compare JOURNEY</button>
+                                <br>
+                                <br>
+                                <input  type="text" id="support"  name="">
+                                <button type="submit"  id="init_support"  class="btn btn-success">initiate support</button>
+                                <br>
+                                 <br>
+                                 <button type="submit"  id="getdetails"  class="btn btn-success">Get details</button>
+                                 <br>
+                                 <br>
+                                
+                            <div class="row ">
+                                <div class="col-md-4 py-5 bg-primary text-white text-center ">
+                                    <div class=" ">
+                                        <div class="card-body">
+                                                <img id="pic" class="img-circle" style="width:30%"/>
+                                            
+                                            <h2 class="py-3">Profile Details</h2>
+                                            <p>Tation argumentum et usu, dicit viderer evertitur te has. Eu dictas concludaturque usu, facete detracto patrioque an per, lucilius pertinacia eu vel.
+                    
+                    </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 py-5 border">
+                                    <h3 class="pb-4">Please fill with your details</h3>
+                                    <form action="{{ url_for('createjourney') }}" method="post" >  
+                                       
+                                        <div class="form-row">
+                                            <div class="form-group col-md-7">
+                                              <input id="Full Name"  placeholder="Full Name" class="form-control" type="text" required>
+                                            </div>
+                                            <div class="form-group col-md-5">
+                                                    
+                                               <input type="email" class="form-control"  placeholder="Email" name="generated" id="email"  > 
+                                               
+                                            </div>
+                                          </div>
+                                        <div class="form-row">
+                                            
+                                            <div class="form-group col-md-7">
+                                                 
+                                                        Due date: <input type="date"  name="datedue" id="date" required>
+                                                       Type: <select name="type" id="jtype">
+                                                          <option value="private">private</option>
+                                                          <option value="public">public</option>
+                                                          <option value="open">open</option>
+                                                          <option value="close">close</option>
+                                                        </select>
+                                                      
+                                                     
+                                                          
+                                            </div>
+                                           
+                                            <div class="form-group col-md-12">
+                                                    
+                                                    <h3 class="py-4">Purpose</h3>
+                                                    <!-- <input id="id1" name="id1">  -->
+                                                    Mode: <select name="mode"  id="jmode">
+                                                      <option value="destroy" selected>Destroy</option>
+                                                      <option value="journeyboard">Journeyboard</option>
+                                                     
+                                                    </select>
+                                                      <textarea id="purpose" name="comment" cols="40" rows="5" class="form-control" required ></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <div class="form-check">
+                                                      <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required >
+                                                      <label class="form-check-label" for="invalidCheck2">
+                                                        <small> &nbsp &nbsp By clicking Submit, you agree to our Terms & Conditions, Visitor Agreement and Privacy Policy.</small>
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                  
+                                         <div class="form-row">
+                                                <button type="submit"  id="submit"  class="btn btn-danger" value="submit">submit</button>
+                                            <button onclick="signOut();" class="btn btn-danger" style="margin-left:20px">Sign Out</button>
+                                            
+                                        </div>   
+                                                  
+                                              </div>
+                                        </div>
+                                        
+                                       
+                                    </form>
+                                   
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+
+                            Journey date: <input type="date"  name="" id="date1" required>
+                            emotion_tag:<input  type="text" id="emotion1"   name="">
+                            
+                            activity:<input  type="text" id="activity"   name="">
+                            others:<input  type="text" id="others"   name="">
+                            upload:<input type="file" name="fileToUpload" id="fileToUpload">
+                            <button type="submit"  id="daily_task"  class="btn btn-success">ok</button>
+
+
+                        </div>
+                    </section>
+                   
+                  
+                    
+                         
+                          
+        </div>
+    
+    
+    <script>
+      function SignGuest(guestuser){
+        var profile=guestuser.getBasicProfile();
+        $(".g-signin2").css("display","none");
+        $(".guest").css("display","block");
+        
+    
+         $("#email_guest").val(profile.getEmail())
+        //   var guestmail=profile.getEmail()
+        //  console.log(guestmail)
+      }
+
+    
+
+
+     function onSignIn(googleUser){
+         var profile=googleUser.getBasicProfile();
+         $(".guest").css("display","none");
+         $(".trap").css("display","none");
+         $(".g-signin2").css("display","none");
+         $(".data").css("display","block");
+         $("#pic").attr('src',profile.getImageUrl());
+         $("#email").val(profile.getEmail())
+          var usermail=profile.getEmail()
+         // console.log(usermail)
+      
+      $.ajax({
+  type: 'POST',
+  url: 'registeruser',
+  data: JSON.stringify({
+    "email":usermail
+  }),
+  success:function(result)
+  {
+   
+   console.log(result)
+  },
+  dataType: "json",
+  contentType: "application/json"
+});
+     }
+
+     function signOut() {
+         var auth2= gapi.auth2.getAuthInstance();
+         auth2.signOut().then(function(){
+         alert("you have been successfully signed out");
+         $(".g-signin2").css("display","block");
+         $(".trap").css("display","block");
+         $(".data").css("display","none");
+         $(".guest").css("display","none");
+         });
+       
+     }
+
+
+  
+          
+     $("#submit").on("click", function(e) {
+      var d = new Date();
+       var n = d.getTime();   
+         id1 ="J1_"+n;
+      var generated_id=$("#id1").val(id1);
+       var email2=$("#email").val();
+       var duedate=$("#date").val();
+       var purposeuser=$("#purpose").val();
+       var journeytype=$("#jtype").val();
+       var journeymode=$("#jmode").val();
+      //  console.log(generated_id)
+    
+ 
+          $.ajax({
+  type: 'POST',
+  url: 'createjourney',
+  data: JSON.stringify({
+    
+     "userid":email2,
+    "journeyID":id1,
+    "Journey_Duedate":duedate,
+    "journeypurpose":purposeuser,
+    "jourtype":journeytype,
+    "jourmode":journeymode
+  
+  }),
+  success:function(result)
+  {
+    
+    console.log(result)
+
+  },
+  dataType: "json",
+  contentType: "application/json"
+});
+
+}); 
+  
+$("#delete").on("click", function(e) {
+     
+       
+     var journey_del=$("#journey_delete").val();
+     var mail_del = $("#email").val()
+       
+    
+      console.log(journey_del);
+      console.log(mail_del);
+
+
+        $.ajax({
+type: 'POST',
+url: 'deletejourney',
+data: JSON.stringify({
+  
+  "journeyid":journey_del,
+  "email_id": mail_del
+  
+
+}),
+success:function(result)
+{
+  console.log(result)
+
+},
+dataType: "json",
+contentType: "application/json"
+});
+
+}); 
+
+$("#update").on("click", function(e) {
+     
+       
+     var journey_upd=$("#journey_update").val();
+     var mail_upd = $("#email").val()
+     var type_upd = $("#jtype").val()
+     var mode_upd = $("#jmode").val() 
+     console.log(journey_upd)
+     console.log(mail_upd)
+     console.log(type_upd)
+     console.log(mode_upd)
+    
+
+        $.ajax({
+type: 'POST',
+url: 'updatejourneytags',
+data: JSON.stringify({
+  "journeyID":journey_upd,
+"userid":mail_upd,
+"journeyType":type_upd,
+"journeymode":mode_upd
+  
+
+}),
+success:function(result)
+{
+  console.log(result)
+
+},
+dataType: "json",
+contentType: "application/json"
+});
+
+}); 
+
+function f1(objButton){  
+    console.log(objButton.value);
+    var mail_emoji = $("#email").val()
+    var emotion_tag=objButton.value
+    console.log(mail_emoji)
+
+ $.ajax({
+type: 'POST',
+url: 'insertemotion',
+data: JSON.stringify({
+  
+  "emotion":emotion_tag,
+  "email_id": mail_emoji
+  
+
+}),
+success:function(result)
+{
+  console.log(result)
+
+},
+dataType: "json",
+contentType: "application/json"
+});
+
+    
+
+};
+
+
+$("#getemotion").on("click", function(e) {     
+     var mail_getemotion = $("#email").val()
+      console.log(mail_getemotion);
+        $.ajax({
+type: 'POST',
+url: 'getemotiontags',
+data: JSON.stringify({
+  "email_id": mail_getemotion
+}),
+success:function(result)
+{
+  console.log(result)
+
+},
+dataType: "json",
+contentType: "application/json"
+});
+
+}); 
+
+
+$("#compare").on("click", function(e) {
+     
+       
+  var mail_getemotion = $("#email").val()
+      console.log(mail_getemotion);
+     var purpose_compare = $("#journey_compare").val()
+     console.log(purpose_compare)
+     var emotion_comp = $("#emotion_compare").val()
+     console.log(emotion_comp)
+     
+    
+
+        $.ajax({
+type: 'POST',
+url: 'comparejourneys',
+data: JSON.stringify({
+  
+"userid":mail_getemotion,
+"journeyID": JOURNEY_ID,
+"journeypurpose":purpose_compare,
+"emotion_tag":emotion_comp
+
+  
+
+}),
+success:function(result)
+{
+  console.log(result)
+
+},
+dataType: "json",
+contentType: "application/json"
+});
+
+}); 
+
+
+
+
+$("#guestsubmit").on("click", function(e) {
+     
+     var guestforjourneyid = $("#userjid").val()
+     var guestforemailid = $("#user_email").val()
+     var guesttag = $("#guestemotiontag").val()
+     var guesttagvalue = $("#guestemotionvalue").val()
+     var guestemail = $("#email_guest").val()
+      // console.log(guestemail);
+
+      //    console.log(guestforjourneyid);
+      //    console.log(guestforemailid);
+      //    console.log(guesttag);
+      //    console.log(guesttagvalue);
+            
+              $.ajax({
+      type: 'POST',
+      url: 'suggestjourneytags',
+      data: JSON.stringify({
+        
+      "emailguest": guestemail,
+      "journeyID":guestforjourneyid,
+      "userID": guestforemailid,
+      "helprequests":guesttag,
+      "guestvalue":guesttagvalue,
+
+      
+        
+      
+      }),
+      success:function(result)
+      {
+        console.log(result)
+      
+      },
+      dataType: "json",
+      contentType: "application/json"
+      });
+      
+      }); 
+      
+      $("#init_support").on("click", function(e) {
+        var requestemotion = $("#support").val()
+        var mail_support = $("#email").val()
+       
+    
+       console.log(mail_support)
+        console.log(requestemotion)
+    
+       
+              $.ajax({
+      type: 'POST',
+      url: 'initiatejourneysupport',
+      data: JSON.stringify({
+        
+        "userid":mail_support,
+        "journeyID":journey_id,
+        "helprequests":requestemotion,
+
+      
+    
+      }),
+      success:function(result)
+      {
+        console.log(result)
+      
+      },
+      dataType: "json",
+      contentType: "application/json"
+      });
+      
+      }); 
+      
+   
+      $("#daily_task").on("click", function(e) {
+        var daily1 = $("#date1").val()
+        var daily2 = $("#emotion1").val()
+        var daily3 = $("#activity").val()
+        var daily4 = $("#others").val()
+        var daily5 = $("#fileToUpload").val()
+        var mail_support = $("#email").val()
+       console.log(daily1)
+       console.log(daily2)
+       console.log(daily3)
+       console.log(daily4)
+       console.log(daily5)
+       console.log(mail_support)
+
+    
+              $.ajax({
+      type: 'POST',
+      url: 'dailytask',
+      data: JSON.stringify({
+        
+        "dailytask1":daily1,
+        "dailytask2":daily2,
+        "dailytask3":daily3,
+        "dailytask4":daily4,
+        "dailytask5":daily5,
+        "dailytask6":mail_support,
+        
+
+      
+    
+      }),
+      success:function(result)
+      {
+        console.log(result)
+      
+      },
+      dataType: "json",
+      contentType: "application/json"
+      });
+      
+      }); 
+      
+
+
+      $("#getdetails").on("click", function(e) {
+      
+        var mail_support = $("#email").val()
+      
+       console.log(mail_support)
+
+    
+              $.ajax({
+      type: 'POST',
+      url: 'getjourneydetails',
+      data: JSON.stringify({
+        
+        
+        "userid":mail_support,
+        "journeyid":journey_id
+        
+
+      
+    
+      }),
+      success:function(result)
+      {
+        console.log(result)
+      
+      },
+      dataType: "json",
+      contentType: "application/json"
+      });
+      
+      }); 
+      
+   
+
+
+
+
+
+        
+    </script>
+
+</body>
+</html>
